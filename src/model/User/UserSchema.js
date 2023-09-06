@@ -50,4 +50,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Admin", userSchema); ///admins
+export default mongoose.model("User", userSchema); ///users
