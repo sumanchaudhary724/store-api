@@ -58,7 +58,7 @@ router.get("/display", auth, async (req, res, next) => {
 });
 
 // create new admin api
-router.post("/", auth, newUserValidation, async (req, res, next) => {
+router.post("/", newUserValidation, async (req, res, next) => {
   try {
     const { password } = req.body;
     req.body.password = hashPassword(password);
@@ -75,7 +75,7 @@ router.post("/", auth, newUserValidation, async (req, res, next) => {
           "Please check your email and follow the instruction to activate your acount",
       });
 
-      const link = ` ${process.env.WEB_DOMAIN}/admin-verification?c=${result.verificationCode}&e=${result.email}`;
+      const link = ` ${process.env.WEB_DOMAIN}/user-verification?c=${result.verificationCode}&e=${result.email}`;
 
       await accountVerificationEmail({
         fName: result.fName,

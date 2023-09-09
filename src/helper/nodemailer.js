@@ -81,7 +81,7 @@ in now
  
 
 <p>
-    Regareds, <br />
+    Regards, <br />
     EST Store <br />
     Customer Support Team
 </p>

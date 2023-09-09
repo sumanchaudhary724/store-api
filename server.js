@@ -17,8 +17,10 @@ app.use(express.json());
 mongoConnect();
 
 // API
+import { auth } from "./src/middleware/authMiddleware.js";
+
 import userRouter from "./src/router/userRouter.js";
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/user", auth, userRouter);
 
 app.get("/", (req, res) => {
   res.json({
