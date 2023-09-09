@@ -16,6 +16,10 @@ app.use(express.json());
 
 mongoConnect();
 
+// API
+import userRouter from "./src/router/userRouter.js";
+app.use("/api/v1/user", userRouter);
+
 app.get("/", (req, res) => {
   res.json({
     status: "success",

@@ -1,17 +1,17 @@
 import express from "express";
 import { compairPassword, hashPassword } from "../helper/bcrypt.js";
 import {
-  getAdminByEmail,
-  getAdminById,
-  getAllAdmin,
-  insertAdmin,
+  getUserByEmail,
+  getUserById,
+  getAllUser,
+  insertUser,
   updateUser,
-  updateAdminById,
+  updateUserById,
 } from "../model/User/UserModel.js";
 import {
   loginValidation,
-  newAdminValidation,
-  newAdminVerificationValidation,
+  newUserValidation,
+  newUserVerificationValidation,
 } from "../middleware/joiValidation.js";
 import {
   accountVerificationEmail,
@@ -31,7 +31,7 @@ import { otpGenerator } from "../helper/randomGenerator.js";
 
 const router = express.Router();
 
-// get admin details
+// get user details
 router.get("/", auth, (req, res, next) => {
   try {
     res.json({
@@ -46,7 +46,7 @@ router.get("/", auth, (req, res, next) => {
 
 router.get("/display", auth, async (req, res, next) => {
   try {
-    const user = await getAllAdmin();
+    const user = await getAllUser();
     res.json({
       status: "success",
       message: " here is the user Info",
@@ -58,7 +58,7 @@ router.get("/display", auth, async (req, res, next) => {
 });
 
 // create new admin api
-router.post("/", auth, newAdminValidation, async (req, res, next) => {
+router.post("/", auth, newUserValidation, async (req, res, next) => {
   try {
     const { password } = req.body;
     req.body.password = hashPassword(password);
@@ -66,7 +66,7 @@ router.post("/", auth, newAdminValidation, async (req, res, next) => {
     //TODO create code and add with req.body
     req.body.verificationCode = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
-    const result = await insertAdmin(req.body);
+    const result = await insertUser(req.body);
 
     if (result?._id) {
       res.json({
@@ -102,8 +102,8 @@ router.post("/", auth, newAdminValidation, async (req, res, next) => {
 
 //verifiying the new accout
 router.post(
-  "/admin-verification",
-  newAdminVerificationValidation,
+  "/user-verification",
+  newUserVerificationValidation,
   async (req, res, next) => {
     try {
       const { c, e } = req.body;
@@ -142,7 +142,7 @@ router.post("/sign-in", loginValidation, async (req, res, next) => {
 
     //find the user by email
 
-    const user = await getAdminByEmail(email);
+    const user = await getUserByEmail(email);
     if (user?._id) {
       //check the password
       const isMatched = compairPassword(password, user.password);
@@ -185,7 +185,7 @@ router.post("/logout", async (req, res, next) => {
     accessJWT && deleteSession(accessJWT);
 
     if (refreshJWT && _id) {
-      const dt = await updateAdminById({ _id, refreshJWT: "" });
+      const dt = await updateUserById({ _id, refreshJWT: "" });
     }
 
     res.json({
@@ -204,7 +204,7 @@ router.post("/request-opt", async (req, res, next) => {
     if (email) {
       //check user exist
 
-      const user = await getAdminByEmail(email);
+      const user = await getUserByEmail(email);
       if (user?._id) {
         // create 6 digit otp and sotre in session with email
         const otp = otpGenerator();
@@ -251,13 +251,13 @@ router.post("/reset-password", async (req, res, next) => {
       if (result?._id) {
         //check user exist
 
-        const user = await getAdminByEmail(email);
+        const user = await getUserByEmail(email);
         if (user?._id) {
           // encrypt the password
 
           const hashPass = hashPassword(password);
 
-          const updatedUser = await updateAdmin(
+          const updatedUser = await updateUser(
             { email },
             { password: hashPass }
           );
@@ -286,7 +286,7 @@ router.post("/reset-password", async (req, res, next) => {
   }
 });
 
-router.put("/profile", auth, newAdminValidation, async (req, res, next) => {
+router.put("/profile", auth, newUserValidation, async (req, res, next) => {
   try {
     // Extract the necessary data from the request body
     const { _id, fName, lName, address, email, phone, password } = req.body;
@@ -295,7 +295,7 @@ router.put("/profile", auth, newAdminValidation, async (req, res, next) => {
     // ...
 
     // Call the function to update the user's profile
-    const result = await updateAdmin(
+    const result = await updateUser(
       { _id }, // Use _id to identify the user
       { fName, lName, address, email, phone, password } // Update data
     );
@@ -326,7 +326,7 @@ router.put("/profilePassword", async (req, res, next) => {
     // ...
 
     // Check if the current password matches the user's existing password
-    const user = await getAdminById(_id); // Implement this function to retrieve user data by ID
+    const user = await getUserById(_id); // Implement this function to retrieve user data by ID
     if (!user) {
       return res.status(400).json({
         status: "error",
@@ -346,7 +346,7 @@ router.put("/profilePassword", async (req, res, next) => {
     const hashPass = hashPassword(newPassword); // Implement the password hashing function
 
     // Update the user's password
-    const updatedUser = await updateAdminById({ _id, password: hashPass });
+    const updatedUser = await updateUserById({ _id, password: hashPass });
 
     if (updatedUser?._id) {
       return res.json({
