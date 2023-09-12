@@ -7,20 +7,24 @@ import { getUserByEmail, getOneUser } from "../model/User/UserModel.js";
 
 export const auth = async (req, res, next) => {
   try {
+    // Skip authentication for OPTIONS requests
+    if (req.method === "OPTIONS") {
+      return next();
+    }
+
     // 1.get the accessJWT
     const { authorization } = req.headers;
 
     //2. decode the jwt
-
     const decoded = verifyAccessJWT(authorization);
 
-    //2a TODO make sure token exist in database
+    //2a TODO make sure token exists in the database
 
-    // 3. extract the email and get user by email
+    // 3. extract the email and get the user by email
     if (decoded?.email) {
-      //4. check if user is active
+      //4. check if the user is active
       const user = await getUserByEmail(decoded.email);
-      console.log(user);
+
       if (user?._id && user?.status === "active") {
         user.refreshJWT = undefined;
         user.password = undefined;
@@ -49,23 +53,27 @@ export const auth = async (req, res, next) => {
 
 export const refreshAuth = async (req, res, next) => {
   try {
+    // Skip authentication for OPTIONS requests
+    if (req.method === "OPTIONS") {
+      return next();
+    }
+
     // 1.get the accessJWT
     const { authorization } = req.headers;
 
     //2. decode the jwt
-
     const decoded = verifyRefreshJWT(authorization);
 
-    // 3. extract the email and get user by email
+    // 3. extract the email and get the user by email
     if (decoded?.email) {
-      //4. check if user is active
+      //4. check if the user is active
       const user = await getOneUser({
         email: decoded.email,
         refreshJWT: authorization,
       });
 
       if (user?._id && user?.status === "active") {
-        // create new accessJWT
+        // create a new accessJWT
         const accessJWT = await createAcessJWT(decoded.email);
 
         return res.json({
