@@ -15,49 +15,6 @@ export const createAcessJWT = async (email) => {
   }
 };
 
-export const createUserWithRefreshToken = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    // Hash the password and other necessary user data
-    const hashedPassword = hashPassword(password);
-
-    // Create a new user record in your database
-    const newUser = {
-      email,
-      password: hashedPassword,
-      // Add other user data as needed
-    };
-
-    const result = await insertUser(newUser);
-
-    if (result?._id) {
-      // Generate access and refresh tokens for the newly registered user
-      const accessJWT = createAcessJWT(result.email);
-      const refreshJWT = createRefreshJWT(result.email);
-
-      // Store the refresh token in your database
-      await updateUser({ email: result.email }, { refreshJWT });
-
-      // Return both tokens in the registration response
-      return res.json({
-        status: "success",
-        message: "User registered successfully",
-        tokens: {
-          accessJWT,
-          refreshJWT,
-        },
-      });
-    }
-
-    res.json({
-      status: "error",
-      message: "Unable to register user. Please try again later.",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const verifyAccessJWT = (token) => {
   if (!token) {
     throw new Error("Access token is missing");

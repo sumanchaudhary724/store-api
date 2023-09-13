@@ -7,11 +7,6 @@ import { getUserByEmail, getOneUser } from "../model/User/UserModel.js";
 
 export const auth = async (req, res, next) => {
   try {
-    // Skip authentication for OPTIONS requests
-    if (req.method === "OPTIONS") {
-      return next();
-    }
-
     // 1.get the accessJWT
     const { authorization } = req.headers;
 

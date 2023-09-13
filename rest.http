@@ -40,7 +40,7 @@ GET {{rootAPI}}/payment
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTI5NTM0NywiZXhwIjoxNjkzODg3MzQ3fQ.Z6L9n0u_YYdwD_UloPRoB8U8iuAt44HAs2ADwt5QcgQ
  
 ###
-POST {{rootAPI}}/admin/sign-in
+POST {{rootAPI}}/user/sign-in
 Content-Type: application/json
 
 {
@@ -53,7 +53,7 @@ Content-Type: application/json
 } 
 
 ### Creare new admin
-POST {{rootAPI}}/admin/sign-in
+POST {{rootAPI}}/user/sign-in
 Content-Type: application/json
 
 {
@@ -83,7 +83,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWls
 
 
 ### GET Categories
-GET {{rootAPI}}/admin/get-accessjwt
+GET {{rootAPI}}/user/get-accessjwt
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTMxNTEyNCwiZXhwIjoxNjkzOTA3MTI0fQ.MsZEBxSSm60x1_6TAFtnVnotuMjB_CFdmkL1bKFrEn8 
 
 ### Update Profile
