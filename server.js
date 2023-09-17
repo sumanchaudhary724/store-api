@@ -18,9 +18,12 @@ mongoConnect();
 
 // API
 import { auth } from "./src/middleware/authMiddleware.js";
-
+import categoryRouter from "./src/router/categoryRouter.js";
+import productRouter from "./src/router/productRouter.js";
 import userRouter from "./src/router/userRouter.js";
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/product", productRouter);
 
 app.get("/", (req, res) => {
   res.json({
