@@ -186,3 +186,47 @@ recently your password is changed, if this is not you, contact us immideatly
 
   console.log("Message sent: %s", info.messageId);
 };
+
+export const orderConfirmationEmail = async (user, result) => {
+  const { email, fName, lName } = user;
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  // send mail with defined transport object
+  const info = await transporter.sendMail({
+    from: `"Footwears" <${process.env.SMTP_USER}>`, // sender address
+    to: email, // list of receivers
+    subject: "Order received ✔", // Subject line
+    text: `Dear ${fName} ${lName}. We have received your order.
+    Your Order ID is : ${result._id}`,
+    html: `
+    <p>
+    Dear ${fName}.${lName}
+</p>
+<p>
+We have  received your order.
+</p>
+<br />
+<br />
+<p>
+Your Order ID is : ${result._id}
+</p>
+<br />
+<br />
+
+<p>
+    Regareds, <br />
+    EST Store <br />
+    Customer Support Team
+</p>`,
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+};
