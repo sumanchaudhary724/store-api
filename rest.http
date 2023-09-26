@@ -73,14 +73,26 @@ Content-Type: application/json
     "title": "Home Furniture"
 }
 
+
 ### GET Categories
 GET {{rootAPI}}/category
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTgxNDY5NiwiZXhwIjoxNjk0NDA2Njk2fQ.khApD63400jctaWhsq-SpPHV7nqRvF17EnjrN_ZUoqU
 
- 
+
+### Post orders
+POST {{rootAPI}}/order
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5NTYzNTE0NiwiZXhwIjoxNjk1NjM2MDQ2fQ.6HmV2x4uURbiy6mrx8DKofZCGPHs-OUIpswkd_S8wgE
+
+{
+    "status": "pending",
+    "fName": "Suman",
+    "totalAmount": "1000",
+    "method": "Credit Card",
+    "isPaid": "true",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+}
+
+
 # ====== request new  access jwt api
-
-
 
 ### GET Categories
 GET {{rootAPI}}/user/get-accessjwt
