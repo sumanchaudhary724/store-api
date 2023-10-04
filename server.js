@@ -18,6 +18,7 @@ mongoConnect();
 
 // API
 import { auth } from "./src/middleware/authMiddleware.js";
+import stripeRouter from "./src/router/stripeRouter.js";
 import orderRouter from "./src/router/orderRouter.js";
 import paymentRouter from "./src/router/paymentRouter.js";
 import categoryRouter from "./src/router/categoryRouter.js";
@@ -28,6 +29,7 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/stripe", stripeRouter);
 
 app.get("/", (req, res) => {
   res.json({
