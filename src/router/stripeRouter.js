@@ -9,7 +9,7 @@ router.post("/payment-intent", async (req, res, next) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.totalAmount * 1000,
       currency: "aud",
-      payment_method_types: [req.body.payment],
+      payment_method_types: ["card"],
     });
     console.log(req.body);
     res.json({
