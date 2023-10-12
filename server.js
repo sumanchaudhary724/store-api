@@ -16,6 +16,14 @@ app.use(express.json());
 
 mongoConnect();
 
+import path from "path";
+
+const __dirname = path.resolve();
+console.log(__dirname);
+// convert public to static
+app.use(express.static(path.join(__dirname + "/public")));
+app.use(express.static(__dirname + "/build"));
+
 // API
 import { auth } from "./src/middleware/authMiddleware.js";
 import stripeRouter from "./src/router/stripeRouter.js";
