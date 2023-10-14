@@ -14,7 +14,7 @@ router.post("/payment-intent", async (req, res, next) => {
     res.json({
       status: "success",
       clientSecret: paymentIntent.client_secret,
-      paymentIntent: paymentIntent,
+      paymentIntent,
     });
   } catch (error) {
     next(error);
